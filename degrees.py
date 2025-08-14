@@ -91,6 +91,32 @@ def shortest_path(source, target):
 
     If no possible path, returns None.
     """
+    Q = QueueFrontier()
+    Q.add(Node(state=source, parent=None, action=None))
+    explored = []
+    result = []
+    found = False
+    while not Q.empty() and not found:
+        x = Q.frontier[0]
+        explored.append(x)
+        neighbors = [n for n in neighbors_for_person(x.state) if not any(m.state == n[1] for m in explored)]
+        for y in neighbors:
+            if any(node.state == y[1] for node in explored):
+                break
+            if y[1] == target:
+                result.append(y)
+                parent = x
+                while not parent.state == source:
+                    for n in explored:
+                        if n.state == parent.parent:
+                            parent = n
+                            if not parent.state == source:
+                                result.insert(0,(n.action,n.state))
+                found = True
+                break
+            Q.add(Node(state=y[1], parent=x.state, action=y[0]))
+        Q.remove()
+    return result
 
     # TODO
     raise NotImplementedError

@@ -116,7 +116,10 @@ def shortest_path(source, target):
                 break
             Q.add(Node(state=y[1], parent=x.state, action=y[0]))
         Q.remove()
-    return result
+    if result == []:
+        return None
+    else:
+        return result
 
     # TODO
     raise NotImplementedError
